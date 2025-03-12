@@ -332,7 +332,7 @@
                 <div style="background: rgba(0, 0, 0, 0.9); padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);">
                     <h2 style="color: #ff0080; text-shadow: 0 0 15px #ff0080; font-family: 'Orbitron', sans-serif;">About Radio Vivid Voice</h2>
                     <p style="color: #00f2ff;">Radio Vivid Voice is your 24/7 independent radio station dedicated to amplifying youth voices, playing the best hits, and creating a platform for expression. We believe in being loud, bold, and heard!</p>
-                    <p style="color: #00f2ff; font-style: italic; margin-top: 20px;">Disclaimer: Dear Listeners, Radio Vivid Voice is a passion project and will always remain non-profit and commercial-free. The adverts you occasionally hear are part of the broadcasting platform's support structure.</p>
+                    <p style="color: #00f2ff; font-style: italic; margin-top: 20px;"><b>Disclaimer:</b> Dear Listeners, Radio Vivid Voice is a passion project and will always remain non-profit and commercial-free. The adverts you occasionally hear are part of the broadcasting platform's support structure.</p>
                     <button onclick="this.parentElement.parentElement.remove()" style="background: #ff0080; border: none; padding: 10px 20px; border-radius: 10px; color: #fff; cursor: pointer;">Close</button>
                 </div>
             `;
@@ -347,7 +347,7 @@
         }
 
         function songRequest() {
-            const mailBody = `Name:\nLocation:\nSong Name:\nArtist Name:\nAlbum/Movie:\nDedicated to:\nMessage for the loved one:`;
+            const mailBody = `Name:\nLocation:\nSong Name:\nArtist Name:\nAlbum/Movie:\nDedicated to:\nMessage for your loved one:`;
             window.location.href = `mailto:radiovividvoice@gmail.com?subject=Song%20Request&body=${encodeURIComponent(mailBody)}`;
         }
 
