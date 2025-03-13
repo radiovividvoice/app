@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- SEO Optimized Title -->
     <title>Radio Vivid Voice - 24/7 Independent Youth Radio</title>
-    <link rel="icon" href="https://i.imgur.com/2VUar8c.png">
+    <link rel="icon" href="https://i.imgur.com/2VUar8c.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="Radio Vivid Voice - Your 24/7 independent radio station amplifying youth voices with the best hits. Non-profit and commercial-free!">
     <meta name="keywords" content="independent radio, youth radio, 24/7 music, online radio, Radio Vivid Voice, non-profit radio, music hits">
@@ -16,7 +15,7 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://rvvlive.vercel.app/">
 
-    <!-- Open Graph Tags for Social Media -->
+    <!-- Open Graph Tags -->
     <meta property="og:title" content="Radio Vivid Voice - 24/7 Independent Youth Radio">
     <meta property="og:description" content="Listen to Radio Vivid Voice for 24/7 music hits and youth expression. A non-profit platform to be loud, bold, and heard!">
     <meta property="og:url" content="https://rvvlive.vercel.app/">
@@ -30,8 +29,6 @@
     <meta name="twitter:description" content="Tune into Radio Vivid Voice for non-stop music and youth voices. Commercial-free and passionate!">
     <meta name="twitter:image" content="https://i.imgur.com/DF0xgbn.png">
 
-	<link rel="icon" href="https://i.imgur.com/2VUar8c.png" type="image/x-icon">
-   
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@400;700&display=swap');
 
@@ -62,43 +59,86 @@
             z-index: -1;
         }
 
+        /* Navbar */
         .navbar {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 242, 255, 0.2);
+            transition: background 0.3s ease;
         }
 
         .navbar-brand {
-            font-weight: bold;
-            font-size: 1.6rem;
             font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
             color: #00f2ff !important;
-            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
             display: flex;
             align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
         }
 
         .navbar-brand img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
+            width: 45px;
+            height: 45px;
+            margin-right: 12px;
+            filter: drop-shadow(0 0 5px #00f2ff);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .nav-link {
-            color: #ddd !important;
-            font-size: 1rem;
-            padding: 8px 12px !important;
-            transition: 0.3s;
+            color: #fff !important;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem !important;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #ff0080;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            transform: translateX(0);
         }
 
         .nav-link:hover {
             color: #ff0080 !important;
-            text-shadow: 0 0 10px #ff0080;
+            text-shadow: 0 0 12px rgba(255, 0, 128, 0.7);
+            transform: translateY(-2px);
         }
 
+        .navbar-toggler {
+            border: none;
+            color: #00f2ff;
+            font-size: 1.5rem;
+        }
+
+        /* Hero Section */
         .hero {
-            padding: 30px 0 50px;
+            padding: 145px 0 20px;
             text-align: center;
         }
 
@@ -111,7 +151,6 @@
 
         .hero h1 {
             font-size: 3rem;
-            font-weight: bold;
             font-family: 'Orbitron', sans-serif;
             color: #ff0080;
             text-shadow: 0 0 20px #ff0080;
@@ -124,31 +163,7 @@
             margin: 35px 0 0;
         }
 
-        .equalizer {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            height: 30px;
-            margin-top: 20px;
-        }
-
-        .bar {
-            width: 8px;
-            height: 15px;
-            background: #00f2ff;
-            animation: bounce 1s infinite alternate;
-        }
-
-        .bar:nth-child(2) { animation-delay: 0.2s; }
-        .bar:nth-child(3) { animation-delay: 0.4s; }
-        .bar:nth-child(4) { animation-delay: 0.6s; }
-        .bar:nth-child(5) { animation-delay: 0.8s; }
-
-        @keyframes bounce {
-            0% { height: 8px; }
-            100% { height: 30px; }
-        }
-
+        /* Player Section */
         #player {
             padding: 30px 0;
         }
@@ -162,27 +177,105 @@
         }
 
         .audio-player {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
-            background: linear-gradient(45deg, #ff0080, #00f2ff);
-            padding: 12px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            background: linear-gradient(135deg, #120318, #2b0870); /* Matches body gradient */
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 0, 128, 0.3); /* Subtle pink border */
         }
 
-        audio {
+        .audio-player::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1), transparent); /* Cyan glow */
+            animation: rotateGlow 10s infinite linear;
+            z-index: -1;
+        }
+
+        .visualizer {
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 5px;
+            margin: 1rem 0;
+        }
+
+        .bar {
+            width: 10px;
+            height: 20px;
+            background: linear-gradient(to top, #120318, #ff0080, #00f2ff); /* Dark base to accents */
+            border-radius: 5px 5px 0 0;
+            transition: height 0.1s ease;
+            box-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3);
+        }
+
+        .btn:hover {
+            background: #ff0080;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 0, 128, 0.7);
+        }
+
+        .volume-control {
+            width: 150px;
+        }
+
+        .volume-slider {
             width: 100%;
-            background: transparent;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
             outline: none;
-            border-radius: 10px;
+            transition: background 0.3s;
         }
 
-        audio::-webkit-media-controls-panel {
-            background: rgba(0, 0, 0, 0.9);
-            border-radius: 10px;
-            padding: 5px;
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00f2ff;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
         }
 
+        #audioPlayer {
+            display: none;
+        }
+
+        /* Youth Section */
         #youth {
             padding: 30px 0;
             text-align: center;
@@ -196,6 +289,7 @@
             margin-bottom: 15px;
         }
 
+        /* Connect Section */
         #connect {
             padding: 30px 0;
             text-align: center;
@@ -214,26 +308,16 @@
             transition: 0.3s;
         }
 
-        .email-btn {
-            background: #ff0080;
-            color: #fff;
-        }
-
-        .fb-btn {
-            background: #1877f2;
-            color: #fff;
-        }
-
-        .ig-btn {
-            background: #e4405f;
-            color: #fff;
-        }
+        .email-btn { background: #ff0080; color: #fff; }
+        .fb-btn { background: #1877f2; color: #fff; }
+        .ig-btn { background: #e4405f; color: #fff; }
 
         .social-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
 
+        /* Footer */
         footer {
             background: #000;
             padding: 15px;
@@ -243,15 +327,133 @@
             z-index: 2;
         }
 
+        /* Dialog Boxes */
+        .dialog-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .dialog-box {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
+            position: relative;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .dialog-box h2 {
+            color: #ff0080;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px #ff0080;
+            margin-bottom: 1.5rem;
+        }
+
+        .dialog-content p {
+            color: #00f2ff;
+            font-size: 1.1rem;
+        }
+
+        .dialog-content .disclaimer {
+            font-style: italic;
+            margin-top: 1rem;
+            opacity: 0.9;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff0080;
+        }
+
+        .dialog-close {
+            background: linear-gradient(45deg, #ff0080, #00f2ff);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dialog-close:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+        }
+
         .programme-card {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
             margin: 10px 0;
         }
+
+        .dialog-box input, .dialog-box textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .dialog-box textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Animations */
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                background: rgba(0, 0, 0, 0.9);
+                padding: 1rem;
+                border-radius: 10px;
+                margin-top: 1rem;
+            }
+            .hero h1 { font-size: 2rem; }
+            .audio-player { max-width: 90%; }
+        }
     </style>
 </head>
-
 <body>
     <div class="main-container">
         <nav class="navbar navbar-expand-lg navbar-dark">
@@ -263,7 +465,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto nav-menu">
                         <li class="nav-item"><a class="nav-link" href="#" onclick="showAbout(); return false;">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="#" onclick="playLive(); return false;">Live</a></li>
                         <li class="nav-item"><a class="nav-link" href="#" onclick="songRequest(); return false;">Request</a></li>
@@ -280,20 +482,22 @@
                 <h2>জোরসে আওয়াজ তোলো</h2>
                 <h1>Be Loud, Be Bold, Be Heard</h1>
                 <p>24/7 Streaming | Music & More</p>
-                <div class="equalizer">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
             </div>
         </header>
 
         <section id="player">
             <h2>Live Now</h2>
             <div class="audio-player">
-                <audio controls id="audioPlayer">
+                <div class="visualizer" id="visualizer"></div>
+                <div class="controls">
+                    <button class="btn play-btn" id="playBtn"><i class="fas fa-play"></i></button>
+                    <button class="btn pause-btn" id="pauseBtn" style="display: none;"><i class="fas fa-pause"></i></button>
+                    <button class="btn mute-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
+                    <div class="volume-control">
+                        <input type="range" min="0" max="100" value="70" class="volume-slider" id="volumeSlider">
+                    </div>
+                </div>
+                <audio id="audioPlayer">
                     <source src="https://stream.zeno.fm/xuin6ocdc2juv" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
@@ -328,98 +532,210 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const audioPlayer = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+
+        audioPlayer.volume = volumeSlider.value / 100;
 
         function showAbout() {
             const aboutContent = `
-                <div style="background: rgba(0, 0, 0, 0.9); padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);">
-                    <h2 style="color: #ff0080; text-shadow: 0 0 15px #ff0080; font-family: 'Orbitron', sans-serif;">About Radio Vivid Voice</h2>
-                    <p style="color: #00f2ff;">Radio Vivid Voice is your 24/7 independent radio station dedicated to amplifying youth voices, playing the best hits, and creating a platform for expression. We believe in being loud, bold, and heard!</p>
-                    <p style="color: #00f2ff; font-style: italic; margin-top: 20px;"><b>Disclaimer:</b> Dear Listeners, Radio Vivid Voice is a passion project and will always remain non-profit and commercial-free. The adverts you occasionally hear are part of the broadcasting platform's support structure.</p>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background: #ff0080; border: none; padding: 10px 20px; border-radius: 10px; color: #fff; cursor: pointer;">Close</button>
+                <div class="dialog-box">
+                    <button class="close-btn" onclick="this.parentElement.parentElement.remove()">✕</button>
+                    <h2>About Radio Vivid Voice</h2>
+                    <div class="dialog-content">
+                        <p>Radio Vivid Voice is your 24/7 independent radio station dedicated to amplifying youth voices, playing the best hits, and creating a platform for expression. We believe in being loud, bold, and heard!</p>
+                        <p class="disclaimer"><b>Disclaimer:</b> Dear Listeners, Radio Vivid Voice is a passion project and will always remain non-profit and commercial-free. The adverts you occasionally hear are part of the broadcasting platform's support structure.</p>
+                    </div>
+                    <button class="dialog-close" onclick="this.parentElement.parentElement.remove()">Close</button>
                 </div>
             `;
             const dialog = document.createElement('div');
-            dialog.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;';
+            dialog.className = 'dialog-wrapper';
             dialog.innerHTML = aboutContent;
             document.body.appendChild(dialog);
         }
 
         function playLive() {
             audioPlayer.play();
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'flex';
+            startVisualizer();
         }
 
         function songRequest() {
-            const mailBody = `Name:\nLocation:\nSong Name:\nArtist Name:\nAlbum/Movie:\nDedicated to:\nMessage for your loved one:`;
+            const requestContent = `
+                <div class="dialog-box">
+                    <button class="close-btn" onclick="this.parentElement.parentElement.remove()">✕</button>
+                    <h2>Request a Song</h2>
+                    <div class="dialog-content">
+                        <input type="text" id="name" placeholder="Name" required>
+                        <input type="text" id="location" placeholder="Location" required>
+                        <input type="text" id="songName" placeholder="Song Name">
+                        <input type="text" id="artistName" placeholder="Artist Name">
+                        <input type="text" id="albumMovie" placeholder="Album/Movie">
+                        <input type="text" id="dedicatedTo" placeholder="Dedicated to">
+                        <textarea id="message" placeholder="Message for your loved one"></textarea>
+                        <button class="dialog-close" onclick="sendRequest(this.parentElement.parentElement)">Send</button>
+                    </div>
+                </div>
+            `;
+            const dialog = document.createElement('div');
+            dialog.className = 'dialog-wrapper';
+            dialog.innerHTML = requestContent;
+            document.body.appendChild(dialog);
+        }
+
+        function sendRequest(dialog) {
+            const name = document.getElementById('name').value;
+            const location = document.getElementById('location').value;
+            const songName = document.getElementById('songName').value;
+            const artistName = document.getElementById('artistName').value;
+            const albumMovie = document.getElementById('albumMovie').value;
+            const dedicatedTo = document.getElementById('dedicatedTo').value;
+            const message = document.getElementById('message').value;
+
+            const mailBody = `Name: ${name}\nLocation: ${location}\nSong Name: ${songName}\nArtist Name: ${artistName}\nAlbum/Movie: ${albumMovie}\nDedicated to: ${dedicatedTo}\nMessage: ${message}`;
             window.location.href = `mailto:radiovividvoice@gmail.com?subject=Song%20Request&body=${encodeURIComponent(mailBody)}`;
+            dialog.parentElement.remove();
         }
 
         function showProgrammes() {
             const programmesContent = `
-                <div style="background: rgba(0, 0, 0, 0.9); padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);">
-                    <h2 style="color: #ff0080; text-shadow: 0 0 15px #ff0080; font-family: 'Orbitron', sans-serif;">Our Programmes</h2>
-                    <div class="programme-card">
-                        <h4 style="color: #00f2ff;">The Voice of the People</h4>
-                        <p style="color: #00f2ff;">Time: Every Saturday at 10:30 PM</p>
+                <div class="dialog-box">
+                    <button class="close-btn" onclick="this.parentElement.parentElement.remove()">✕</button>
+                    <h2>Our Programmes</h2>
+                    <div class="dialog-content">
+                        <div class="programme-card">
+                            <h4 style="color: #00f2ff;">The Voice of the People</h4>
+                            <p>Time: Every Saturday at 10:30 PM</p>
+                        </div>
+                        <div class="programme-card">
+                            <h4 style="color: #00f2ff;">Music Planet</h4>
+                            <p>Time: 24x7 Non-Stop World Music</p>
+                        </div>
                     </div>
-                    <div class="programme-card">
-                        <h4 style="color: #00f2ff;">Music Planet</h4>
-                        <p style="color: #00f2ff;">Time: 24x7 Non-Stop World Music</p>
-                    </div>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background: #ff0080; border: none; padding: 10px 20px; border-radius: 10px; color: #fff; cursor: pointer;">Close</button>
+                    <button class="dialog-close" onclick="this.parentElement.parentElement.remove()">Close</button>
                 </div>
             `;
             const dialog = document.createElement('div');
-            dialog.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;';
+            dialog.className = 'dialog-wrapper';
             dialog.innerHTML = programmesContent;
             document.body.appendChild(dialog);
         }
 
         function showAnnouncement() {
             const announcementContent = `
-                <div style="background: rgba(0, 0, 0, 0.9); padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);">
-                    <h2 style="color: #ff0080; text-shadow: 0 0 15px #ff0080; font-family: 'Orbitron', sans-serif;">Announcement</h2>
-                    <p style="color: #00f2ff;">Stay tuned for our upcoming special programmes and community events. We appreciate your continuous support!</p>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background: #ff0080; border: none; padding: 10px 20px; border-radius: 10px; color: #fff; cursor: pointer;">Close</button>
+                <div class="dialog-box">
+                    <button class="close-btn" onclick="this.parentElement.parentElement.remove()">✕</button>
+                    <h2>Announcement</h2>
+                    <div class="dialog-content">
+                        <p>Stay tuned for our upcoming special programmes and community events. We appreciate your continuous support!</p>
+                    </div>
+                    <button class="dialog-close" onclick="this.parentElement.parentElement.remove()">Close</button>
                 </div>
             `;
             const dialog = document.createElement('div');
-            dialog.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;';
+            dialog.className = 'dialog-wrapper';
             dialog.innerHTML = announcementContent;
             document.body.appendChild(dialog);
         }
 
         function showContact() {
             const contactContent = `
-                <div style="background: rgba(0, 0, 0, 0.9); padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.3); width: 90%; max-width: 500px;">
-                    <h2 style="color: #ff0080; text-shadow: 0 0 15px #ff0080; font-family: 'Orbitron', sans-serif;">Contact Us</h2>
-                    <p style="color: #00f2ff;">Email: radiovividvoice@gmail.com</p>
-                    <p style="color: #00f2ff;"><a href="https://facebook.com/radiovividvoice" target="_blank" style="color: #00f2ff;">Facebook Page</a></p>
-                    <p style="color: #00f2ff;"><a href="https://instagram.com/radio_vivid_voice" target="_blank" style="color: #00f2ff;">Instagram</a></p>
-                    <form id="contactForm" style="margin-top: 20px;">
-                        <input type="text" id="name" placeholder="Name" style="width: 100%; margin: 10px 0; padding: 8px; border-radius: 5px; border: none; background: rgba(255, 255, 255, 0.1); color: #fff;">
-                        <input type="text" id="location" placeholder="Location" style="width: 100%; margin: 10px 0; padding: 8px; border-radius: 5px; border: none; background: rgba(255, 255, 255, 0.1); color: #fff;">
-                        <input type="text" id="subject" placeholder="Subject" style="width: 100%; margin: 10px 0; padding: 8px; border-radius: 5px; border: none; background: rgba(255, 255, 255, 0.1); color: #fff;">
-                        <textarea id="message" placeholder="Message" style="width: 100%; margin: 10px 0; padding: 8px; border-radius: 5px; border: none; background: rgba(255, 255, 255, 0.1); color: #fff; min-height: 100px;"></textarea>
-                        <button type="button" onclick="sendContact()" style="background: #ff0080; border: none; padding: 10px 20px; border-radius: 10px; color: #fff; cursor: pointer;">Send</button>
-                        <button type="button" onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #00f2ff; border: none; padding: 10px 20px; border-radius: 10px; color: #000; cursor: pointer; margin-left: 10px;">Close</button>
-                    </form>
+                <div class="dialog-box">
+                    <button class="close-btn" onclick="this.parentElement.parentElement.remove()">✕</button>
+                    <h2>Contact Us</h2>
+                    <div class="dialog-content">
+                        <p>Email: radiovividvoice@gmail.com</p>
+                        <p><a href="https://facebook.com/radiovividvoice" target="_blank" style="color: #00f2ff;">Facebook</a></p>
+                        <p><a href="https://instagram.com/radio_vivid_voice" target="_blank" style="color: #00f2ff;">Instagram</a></p>
+                        <input type="text" id="name" placeholder="Name">
+                        <input type="text" id="location" placeholder="Location">
+                        <input type="text" id="subject" placeholder="Subject">
+                        <textarea id="message" placeholder="Message"></textarea>
+                        <button class="dialog-close" onclick="sendContact(this.parentElement.parentElement)">Send</button>
+                    </div>
                 </div>
             `;
             const dialog = document.createElement('div');
-            dialog.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;';
+            dialog.className = 'dialog-wrapper';
             dialog.innerHTML = contactContent;
             document.body.appendChild(dialog);
         }
 
-        function sendContact() {
+        function sendContact(dialog) {
             const name = document.getElementById('name').value;
             const location = document.getElementById('location').value;
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
-            
+
             const mailSubject = `${name} + ${location} + ${subject}`;
             const mailBody = `Message: ${message}`;
             window.location.href = `mailto:radiovividvoice@gmail.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+            dialog.parentElement.remove();
+        }
+
+        // Audio Player Controls
+        playBtn.addEventListener('click', () => {
+            audioPlayer.play();
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'flex';
+            startVisualizer();
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            audioPlayer.pause();
+            playBtn.style.display = 'flex';
+            pauseBtn.style.display = 'none';
+            stopVisualizer();
+        });
+
+        muteBtn.addEventListener('click', () => {
+            audioPlayer.muted = !audioPlayer.muted;
+            muteBtn.innerHTML = audioPlayer.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+        });
+
+        volumeSlider.addEventListener('input', () => {
+            audioPlayer.volume = volumeSlider.value / 100;
+            muteBtn.innerHTML = volumeSlider.value == 0 ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+            audioPlayer.muted = volumeSlider.value == 0;
+        });
+
+        audioPlayer.addEventListener('error', () => {
+            alert('Stream loading failed. Please check your connection.');
+            playBtn.style.display = 'flex';
+            pauseBtn.style.display = 'none';
+            stopVisualizer();
+        });
+
+        // Visualizer
+        function startVisualizer() {
+            const visualizer = document.getElementById('visualizer');
+            visualizer.innerHTML = '';
+            const barCount = 20;
+            for (let i = 0; i < barCount; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                visualizer.appendChild(bar);
+            }
+            const bars = document.querySelectorAll('.bar');
+            let interval = setInterval(() => {
+                if (audioPlayer.paused) {
+                    clearInterval(interval);
+                    return;
+                }
+                bars.forEach(bar => {
+                    const height = Math.random() * 80 + 10;
+                    bar.style.height = `${height}px`;
+                });
+            }, 100);
+        }
+
+        function stopVisualizer() {
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach(bar => bar.style.height = '20px');
         }
     </script>
 </body>
