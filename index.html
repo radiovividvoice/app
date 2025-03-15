@@ -179,7 +179,8 @@
         .audio-player {
             max-width: 600px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #120318, #2b0870); /* Matches body gradient */
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white for glass effect */
+            backdrop-filter: blur(10px); /* Frosted glass blur */
             padding: 1.5rem;
             border-radius: 20px;
             box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
@@ -195,7 +196,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.1), transparent); /* Cyan glow */
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.2), transparent); /* Soft pink glow for romantic vibe */
             animation: rotateGlow 10s infinite linear;
             z-index: -1;
         }
@@ -212,10 +213,10 @@
         .bar {
             width: 10px;
             height: 20px;
-            background: linear-gradient(to top, #120318, #ff0080, #00f2ff); /* Dark base to accents */
+            background: linear-gradient(to top, #4b0d2e, #ff69b4, #dda0dd); /* Romantic vibe: deep red to hot pink to lavender */
             border-radius: 5px 5px 0 0;
             transition: height 0.1s ease;
-            box-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.6); /* Soft pink glow */
         }
 
         .controls {
