@@ -179,14 +179,14 @@
         .audio-player {
             max-width: 600px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white for glass effect */
-            backdrop-filter: blur(10px); /* Frosted glass blur */
+            background: rgba(255, 255, 255, 0.05); /* Even more transparent */
+            backdrop-filter: blur(15px); /* Stronger blur for glassy effect */
             padding: 1.5rem;
             border-radius: 20px;
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
+            box-shadow: 0 0 25px rgba(255, 182, 193, 0.4); /* Light pink shadow for romance */
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 0, 128, 0.3); /* Subtle pink border */
+            border: 1px solid rgba(255, 182, 193, 0.3); /* Light pink border */
         }
 
         .audio-player::before {
@@ -196,7 +196,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255, 105, 180, 0.2), transparent); /* Soft pink glow for romantic vibe */
+            background: radial-gradient(circle, rgba(255, 192, 203, 0.2), transparent); /* Pink glow for joy */
             animation: rotateGlow 10s infinite linear;
             z-index: -1;
         }
@@ -213,10 +213,10 @@
         .bar {
             width: 10px;
             height: 20px;
-            background: linear-gradient(to top, #4b0d2e, #ff69b4, #dda0dd); /* Romantic vibe: deep red to hot pink to lavender */
+            background: linear-gradient(to top, #ff4040, #ff85a1, #ffd700); /* Red to soft pink to golden yellow */
             border-radius: 5px 5px 0 0;
             transition: height 0.1s ease;
-            box-shadow: 0 0 8px rgba(255, 105, 180, 0.6); /* Soft pink glow */
+            box-shadow: 0 0 8px rgba(255, 133, 161, 0.7); /* Warm pink glow */
         }
 
         .controls {
@@ -240,13 +240,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.3); /* Light pink shadow */
         }
 
         .btn:hover {
-            background: #ff0080;
+            background: #ff85a1; /* Soft pink hover */
             transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(255, 0, 128, 0.7);
+            box-shadow: 0 8px 20px rgba(255, 133, 161, 0.7);
         }
 
         .volume-control {
@@ -267,9 +267,9 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: #00f2ff;
+            background: #ff85a1; /* Soft pink thumb */
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
+            box-shadow: 0 0 10px rgba(255, 133, 161, 0.6);
         }
 
         #audioPlayer {
