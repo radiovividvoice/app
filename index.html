@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  	<meta name="google-site-verification" content="2YVtNRmliSpLft_54LS9WwQySMeNmOyq1q5qRq8H7O0" />
+    <meta name="google-site-verification" content="2YVtNRmliSpLft_54LS9WwQySMeNmOyq1q5qRq8H7O0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="Radio Vivid Voice - 24/7 independent radio station amplifying youth voices with the best hits. Non-profit and commercial-free!">
     <meta name="keywords" content="independent radio, youth radio, 24/7 music, online radio, Radio Vivid Voice, non-profit radio, music hits, bengali radio">
@@ -44,7 +43,7 @@
     </script>
 
     <title>Radio Vivid Voice - The True Voice of the Heart</title>
-    
+
     <link rel="icon" href="https://i.imgur.com/2VUar8c.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -151,6 +150,7 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .social-icons-bar a::before,
@@ -165,9 +165,7 @@
         }
 
         .social-icons-bar a:hover::before,
-        .social-icons-bar button:hover::before {
-            opacity: 1;
-        }
+        .social-icons-bar button:hover::before { opacity: 1; }
 
         .social-icons-bar a:hover,
         .social-icons-bar button:hover {
@@ -216,14 +214,118 @@
         }
 
         #station-name { font-size: 2em; font-weight: 700; color: #fff; }
+
         #station-slogan {
             font-size: 1.1em;
             font-weight: 300;
             font-family: 'Tiro Bangla', sans-serif;
             opacity: 0.8;
-            margin-bottom: 30px;
+            margin-bottom: 22px;
         }
 
+        /* ── Now Playing Card ── */
+        #now-playing-card {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(0, 242, 255, 0.18);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+            transition: opacity 0.4s ease;
+            text-align: left;
+        }
+
+        .np-header {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 9px;
+        }
+
+        /* পালসিং লাল ডট — LIVE ইন্ডিকেটর */
+        .np-live-dot {
+            width: 7px;
+            height: 7px;
+            background: #ff3c3c;
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: livePulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1;   transform: scale(1);   box-shadow: 0 0 0 0 rgba(255,60,60,0.6); }
+            50%       { opacity: 0.5; transform: scale(0.85); box-shadow: 0 0 0 4px rgba(255,60,60,0); }
+        }
+
+        .np-label-text {
+            font-size: 0.6em;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        /* স্ক্রোলিং টেক্সট wrapper */
+        .np-scroll-wrapper {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        /* টেক্সটের fade-out মাস্ক ডানদিকে */
+        .np-scroll-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 0;
+            width: 30px; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(5, 0, 10, 0.85));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .np-title {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #ffffff;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .np-artist {
+            font-size: 0.78em;
+            font-weight: 400;
+            color: var(--secondary-color);
+            opacity: 0.8;
+            white-space: nowrap;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        /* মার্কি অ্যানিমেশন — JS দিয়ে .scrolling ক্লাস যোগ হয় */
+        @keyframes marqueeScroll {
+            0%   { transform: translateX(0); }
+            15%  { transform: translateX(0); }           /* শুরুতে ১.৫s স্থির */
+            85%  { transform: translateX(var(--scroll-dist)); }
+            100% { transform: translateX(var(--scroll-dist)); } /* শেষেও স্থির */
+        }
+
+        .np-title.scrolling,
+        .np-artist.scrolling {
+            animation: marqueeScroll 7s ease-in-out infinite alternate;
+        }
+
+        /* Song change fade animation */
+        @keyframes npFadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .np-animate {
+            animation: npFadeIn 0.45s ease forwards;
+        }
+
+        /* ── Controls ── */
         #controls { display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
         .control-btn {
@@ -281,7 +383,7 @@
             margin-top: auto;
         }
 
-        /* Modals */
+        /* ── Modals ── */
         #modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -372,6 +474,7 @@
 </head>
 <body>
     <div class="main-container">
+
         <!-- Navbar -->
         <nav class="navbar">
             <div class="navbar-brand">
@@ -386,7 +489,7 @@
             </div>
         </nav>
 
-        <!-- Social Icons Bar - আগের মতোই সুন্দর, কোনো ডট/লাইন নাই -->
+        <!-- Social Icons Bar -->
         <div class="social-icons-bar">
             <a href="https://facebook.com/radiovividvoice" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook-f"></i>
@@ -405,9 +508,25 @@
             <div class="station-info">
                 <img id="station-logo" src="https://i.imgur.com/dBeUl5M.png" alt="Station Logo">
                 <h1 id="station-name">Radio Vivid Voice</h1>
-                <p id="station-slogan">“জোরসে আওয়াজ তোলো”</p>
+                <p id="station-slogan">"জোরসে আওয়াজ তোলো"</p>
             </div>
+
+            <!-- ── Now Playing Card ── -->
+            <div id="now-playing-card">
+                <div class="np-header">
+                    <span class="np-live-dot"></span>
+                    <span class="np-label-text">Now Playing</span>
+                </div>
+                <div class="np-scroll-wrapper">
+                    <div id="np-title" class="np-title">Connecting...</div>
+                </div>
+                <div class="np-scroll-wrapper" style="margin-top:3px;">
+                    <div id="np-artist" class="np-artist"></div>
+                </div>
+            </div>
+
             <audio id="audio-stream" src="https://stream.zeno.fm/xuin6ocdc2juv" crossorigin="anonymous"></audio>
+
             <div id="controls">
                 <button id="play-pause-btn" class="control-btn">
                     <i class="fas fa-play"></i>
@@ -439,7 +558,7 @@
                 <p>Radio Vivid Voice is a 24/7 independent radio station dedicated to amplifying youth voices, playing the best hits, and creating a platform for expression. We believe in being loud, bold, and heard!</p>
             </div>
             <div class="programme-card">
-                <p class="disclaimer"><b>Disclaimer:</b> Dear Listeners, Radio Vivid Voice is a passion project and will always remain non-profit and commercial-free. The adverts you occasionally hear are part of the broadcasting platform's support structure.</p>
+                <p><b>Disclaimer:</b> Dear Listeners, Radio Vivid Voice is a passion project and will always remain non-profit and commercial-free. The adverts you occasionally hear are part of the broadcasting platform's support structure.</p>
             </div>
         </div>
     </div>
@@ -489,7 +608,7 @@
         <div class="modal-body">
             <p>For any inquiries, please reach out to us at:</p>
             <a href="mailto:radiovividvoice@gmail.com">radiovividvoice@gmail.com</a>
-            <div class="social-links">
+            <div class="social-links" style="margin-top:15px;">
                 <a href="https://facebook.com/radiovividvoice" target="_blank"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://instagram.com/radio_vivid_voice" target="_blank"><i class="fab fa-instagram"></i></a>
             </div>
@@ -497,109 +616,223 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const audioStream = document.getElementById('audio-stream');
-            const playPauseBtn = document.getElementById('play-pause-btn');
-            const volumeSlider = document.getElementById('volume-slider');
-            const canvas = document.getElementById('visualizer');
-            const canvasCtx = canvas.getContext('2d');
+    document.addEventListener('DOMContentLoaded', () => {
 
-            let audioContext, analyser, source, isPlaying = false;
+        // ══════════════════════════════════════════════
+        //  ১. অডিও প্লেয়ার ও ভিজুয়ালাইজার
+        // ══════════════════════════════════════════════
+        const audioStream  = document.getElementById('audio-stream');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        const canvas       = document.getElementById('visualizer');
+        const canvasCtx    = canvas.getContext('2d');
 
-            function setupVisualizer() {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioContext.createAnalyser();
-                source = audioContext.createMediaElementSource(audioStream);
-                source.connect(analyser);
-                analyser.connect(audioContext.destination);
-                analyser.fftSize = 256;
-                const bufferLength = analyser.frequencyBinCount;
-                const dataArray = new Uint8Array(bufferLength);
+        let audioContext, analyser, source, isPlaying = false;
 
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
+        function setupVisualizer() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser     = audioContext.createAnalyser();
+            source       = audioContext.createMediaElementSource(audioStream);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+            analyser.fftSize = 256;
 
-                function draw() {
-                    requestAnimationFrame(draw);
-                    analyser.getByteFrequencyData(dataArray);
-                    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray    = new Uint8Array(bufferLength);
 
-                    const barWidth = (canvas.width / bufferLength) * 2.5;
-                    let x = 0;
-                    for (let i = 0; i < bufferLength; i++) {
-                        const barHeight = dataArray[i] * 1.5;
-                        const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
-                        gradient.addColorStop(0, 'rgba(106, 13, 173, 0.5)');
-                        gradient.addColorStop(1, 'rgba(0, 242, 255, 0.5)');
-                        canvasCtx.fillStyle = gradient;
-                        canvasCtx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight);
-                        x += barWidth + 1;
-                    }
+            canvas.width  = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            function draw() {
+                requestAnimationFrame(draw);
+                analyser.getByteFrequencyData(dataArray);
+                canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const barWidth = (canvas.width / bufferLength) * 2.5;
+                let x = 0;
+                for (let i = 0; i < bufferLength; i++) {
+                    const barHeight = dataArray[i] * 1.5;
+                    const gradient  = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
+                    gradient.addColorStop(0, 'rgba(106, 13, 173, 0.5)');
+                    gradient.addColorStop(1, 'rgba(0, 242, 255, 0.5)');
+                    canvasCtx.fillStyle = gradient;
+                    canvasCtx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight);
+                    x += barWidth + 1;
                 }
-                draw();
             }
+            draw();
+        }
 
-            playPauseBtn.addEventListener('click', () => {
-                if (!audioContext) setupVisualizer();
-                if (isPlaying) {
-                    audioStream.pause();
-                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                } else {
-                    audioStream.play();
-                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                }
-                isPlaying = !isPlaying;
-            });
-
-            volumeSlider.addEventListener('input', e => audioStream.volume = e.target.value);
-
-            // Modal System
-            const modalTriggers = document.querySelectorAll('[data-modal]');
-            const closeBtns = document.querySelectorAll('.close-modal-btn');
-            const overlay = document.getElementById('modal-overlay');
-
-            modalTriggers.forEach(t => t.addEventListener('click', e => {
-                e.preventDefault();
-                const modal = document.getElementById(t.dataset.modal + '-modal');
-                openModal(modal);
-            }));
-
-            closeBtns.forEach(b => b.addEventListener('click', () => closeModal(b.closest('.modal'))));
-            overlay.addEventListener('click', () => {
-                const open = document.querySelector('.modal[style*="block"]');
-                if (open) closeModal(open);
-            });
-
-            function openModal(m) {
-                overlay.style.display = 'block';
-                m.style.display = 'block';
-                setTimeout(() => {
-                    overlay.style.opacity = '1';
-                    m.style.opacity = '1';
-                    m.style.transform = 'translate(-50%, -50%) scale(1)';
-                }, 10);
+        playPauseBtn.addEventListener('click', () => {
+            if (!audioContext) setupVisualizer();
+            if (isPlaying) {
+                audioStream.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                audioStream.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
             }
-
-            function closeModal(m) {
-                overlay.style.opacity = '0';
-                m.style.opacity = '0';
-                m.style.transform = 'translate(-50%, -50%) scale(0.95)';
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                    m.style.display = 'none';
-                }, 300);
-            }
-
-            // Request Form
-            document.getElementById('request-form').addEventListener('submit', e => {
-                e.preventDefault();
-                const f = new FormData(e.target);
-                const body = `Name: ${f.get('name')}\nLocation: ${f.get('location')}\nSong: ${f.get('songName')}\nArtist: ${f.get('artistName')}\nMessage: ${f.get('message')}`;
-                window.location.href = `mailto:radiovividvoice@gmail.com?subject=Song Request&body=${encodeURIComponent(body)}`;
-                closeModal(document.getElementById('request-modal'));
-                e.target.reset();
-            });
+            isPlaying = !isPlaying;
         });
+
+        volumeSlider.addEventListener('input', e => { audioStream.volume = e.target.value; });
+
+
+        // ══════════════════════════════════════════════
+        //  ২. Now Playing — Zeno.fm SSE Metadata
+        // ══════════════════════════════════════════════
+        const npTitleEl  = document.getElementById('np-title');
+        const npArtistEl = document.getElementById('np-artist');
+
+        /**
+         * টেক্সট wrapper-এর চেয়ে বড় হলে marquee চালু করা।
+         * CSS variable --scroll-dist দিয়ে স্ক্রোলের দূরত্ব সেট হয়।
+         */
+        function applyMarqueeIfNeeded(el) {
+            el.classList.remove('scrolling');
+            // reflow trigger করে সঠিক scrollWidth পাওয়া
+            void el.offsetWidth;
+            const overflow = el.scrollWidth - el.parentElement.clientWidth;
+            if (overflow > 5) {
+                el.style.setProperty('--scroll-dist', `-${overflow + 10}px`);
+                el.classList.add('scrolling');
+            }
+        }
+
+        /**
+         * Now Playing কার্ড আপডেট — fade-in অ্যানিমেশন সহ।
+         * streamTitle ফরম্যাট: "Artist - Song Title"
+         */
+        function updateNowPlaying(streamTitle) {
+            let artist = '';
+            let title  = streamTitle || '';
+
+            if (title.includes(' - ')) {
+                const idx = title.indexOf(' - ');
+                artist = title.substring(0, idx).trim();
+                title  = title.substring(idx + 3).trim();
+            }
+
+            // Fade out
+            const card = document.getElementById('now-playing-card');
+            card.style.opacity = '0';
+
+            setTimeout(() => {
+                // টেক্সট সেট করা
+                npTitleEl.textContent  = title  || 'Radio Vivid Voice';
+                npArtistEl.textContent = artist || '';
+
+                // অ্যানিমেশন রিসেট করে আবার চালু
+                npTitleEl.classList.remove('np-animate', 'scrolling');
+                npArtistEl.classList.remove('np-animate', 'scrolling');
+                void npTitleEl.offsetWidth; // reflow
+
+                npTitleEl.classList.add('np-animate');
+                npArtistEl.classList.add('np-animate');
+
+                card.style.opacity = '1';
+
+                // marquee দরকার কিনা চেক — DOM paint শেষ হওয়ার পর
+                requestAnimationFrame(() => {
+                    applyMarqueeIfNeeded(npTitleEl);
+                    applyMarqueeIfNeeded(npArtistEl);
+                });
+
+            }, 350);
+        }
+
+        /**
+         * Zeno.fm-এর Server-Sent Events (SSE) endpoint থেকে
+         * real-time metadata নেওয়া। Connection ড্রপ হলে
+         * ১০ সেকেন্ড পর আবার try করে।
+         */
+        function connectMetadataSSE() {
+            const sseUrl = 'https://api.zeno.fm/mounts/metadata/subscribe/xuin6ocdc2juv';
+            let sse;
+
+            try {
+                sse = new EventSource(sseUrl);
+            } catch (e) {
+                setTimeout(connectMetadataSSE, 10000);
+                return;
+            }
+
+            sse.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    // Zeno.fm SSE payload-এ streamTitle field থাকে
+                    if (data.streamTitle !== undefined) {
+                        updateNowPlaying(data.streamTitle);
+                    }
+                } catch (err) {
+                    // JSON parse error — skip
+                }
+            };
+
+            sse.onerror = function() {
+                sse.close();
+                // ১০ সেকেন্ড পর reconnect
+                setTimeout(connectMetadataSSE, 10000);
+            };
+        }
+
+        // SSE connection চালু
+        connectMetadataSSE();
+
+
+        // ══════════════════════════════════════════════
+        //  ৩. Modal System
+        // ══════════════════════════════════════════════
+        const modalTriggers = document.querySelectorAll('[data-modal]');
+        const closeBtns     = document.querySelectorAll('.close-modal-btn');
+        const overlay       = document.getElementById('modal-overlay');
+
+        modalTriggers.forEach(t => t.addEventListener('click', e => {
+            e.preventDefault();
+            const modal = document.getElementById(t.dataset.modal + '-modal');
+            if (modal) openModal(modal);
+        }));
+
+        closeBtns.forEach(b => b.addEventListener('click', () => closeModal(b.closest('.modal'))));
+
+        overlay.addEventListener('click', () => {
+            const open = document.querySelector('.modal[style*="block"]');
+            if (open) closeModal(open);
+        });
+
+        function openModal(m) {
+            overlay.style.display = 'block';
+            m.style.display       = 'block';
+            setTimeout(() => {
+                overlay.style.opacity  = '1';
+                m.style.opacity        = '1';
+                m.style.transform      = 'translate(-50%, -50%) scale(1)';
+            }, 10);
+        }
+
+        function closeModal(m) {
+            overlay.style.opacity = '0';
+            m.style.opacity       = '0';
+            m.style.transform     = 'translate(-50%, -50%) scale(0.95)';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                m.style.display       = 'none';
+            }, 300);
+        }
+
+        // ══════════════════════════════════════════════
+        //  ৪. Request Form
+        // ══════════════════════════════════════════════
+        document.getElementById('request-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const f    = new FormData(e.target);
+            const body = `Name: ${f.get('name')}\nLocation: ${f.get('location')}\nSong: ${f.get('songName')}\nArtist: ${f.get('artistName')}\nMessage: ${f.get('message')}`;
+            window.location.href = `mailto:radiovividvoice@gmail.com?subject=Song Request&body=${encodeURIComponent(body)}`;
+            closeModal(document.getElementById('request-modal'));
+            e.target.reset();
+        });
+
+    });
     </script>
 </body>
 </html>
