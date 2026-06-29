@@ -5,14 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO Meta Tags -->
     <meta name="description" content="Radio Vivid Voice - 24/7 independent radio station amplifying youth voices with the best hits. Non-profit and commercial-free!">
     <meta name="keywords" content="independent radio, youth radio, 24/7 music, bangla online radio, Radio Vivid Voice, non-profit radio, music hits, bengali radio, mymensingh radio, bangladeshi radio">
     <meta name="author" content="Radio Vivid Voice Team">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://rvvlive.vercel.app/">
 
-    <!-- Open Graph -->
     <meta property="og:title" content="Radio Vivid Voice - The True Voice of the Heart">
     <meta property="og:description" content="Listen to Radio Vivid Voice for 24/7 music hits and youth expression. A non-profit platform to be loud, bold, and heard!">
     <meta property="og:url" content="https://rvvlive.vercel.app/">
@@ -20,13 +18,11 @@
     <meta property="og:image" content="https://i.imgur.com/dBeUl5M.png">
     <meta property="og:site_name" content="Radio Vivid Voice">
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Radio Vivid Voice - The True Voice of the Heart">
     <meta name="twitter:description" content="Tune into Radio Vivid Voice for non-stop music and youth voices. Commercial-free and passionate!">
     <meta name="twitter:image" content="https://i.imgur.com/dBeUl5M.png">
 
-    <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -475,7 +471,6 @@
 <body>
     <div class="main-container">
 
-        <!-- Navbar -->
         <nav class="navbar">
             <div class="navbar-brand">
                 <img src="https://i.imgur.com/dBeUl5M.png" alt="Radio Vivid Voice Logo">
@@ -489,7 +484,6 @@
             </div>
         </nav>
 
-        <!-- Social Icons Bar -->
         <div class="social-icons-bar">
             <a href="https://facebook.com/radiovividvoice" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook-f"></i>
@@ -502,7 +496,6 @@
             </a>
         </div>
 
-        <!-- Radio Player -->
         <div id="radio-player">
             <canvas id="visualizer"></canvas>
             <div class="station-info">
@@ -511,7 +504,6 @@
                 <p id="station-slogan">"জোরসে আওয়াজ তোলো"</p>
             </div>
 
-            <!-- ── Now Playing Card ── -->
             <div id="now-playing-card">
                 <div class="np-header">
                     <span class="np-live-dot"></span>
@@ -525,7 +517,7 @@
                 </div>
             </div>
 
-            <audio id="audio-stream" src="https://stream.zeno.fm/xuin6ocdc2juv" crossorigin="anonymous"></audio>
+            <audio id="audio-stream" crossorigin="anonymous"></audio>
 
             <div id="controls">
                 <button id="play-pause-btn" class="control-btn">
@@ -544,10 +536,8 @@
         </footer>
     </div>
 
-    <!-- Modals -->
     <div id="modal-overlay"></div>
 
-    <!-- About Modal -->
     <div id="about-modal" class="modal">
         <div class="modal-header">
             <h2>About Radio Vivid Voice</h2>
@@ -563,7 +553,6 @@
         </div>
     </div>
 
-    <!-- Request Modal -->
     <div id="request-modal" class="modal">
         <div class="modal-header">
             <h2>Request a Song</h2>
@@ -581,7 +570,6 @@
         </div>
     </div>
 
-    <!-- Programmes Modal -->
     <div id="programmes-modal" class="modal">
         <div class="modal-header">
             <h2>Our Programmes</h2>
@@ -599,7 +587,6 @@
         </div>
     </div>
 
-    <!-- Contact Modal -->
     <div id="contact-modal" class="modal">
         <div class="modal-header">
             <h2>Contact Us</h2>
@@ -627,6 +614,7 @@
         const canvas       = document.getElementById('visualizer');
         const canvasCtx    = canvas.getContext('2d');
 
+        const STREAM_URL = "https://stream.zeno.fm/xuin6ocdc2juv";
         let audioContext, analyser, source, isPlaying = false;
 
         function setupVisualizer() {
@@ -665,16 +653,27 @@
 
         playPauseBtn.addEventListener('click', () => {
             if (!audioContext) setupVisualizer();
+            
+            // ব্রাউজার সিকিউরিটি পলিসির জন্য AudioContext রিজিউম করা
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
             if (isPlaying) {
                 audioStream.pause();
+                audioStream.src = ''; // বাফার ক্লিয়ার করে গ্লিচ বন্ধ করা হলো
                 playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
             } else {
-                audioStream.play();
+                audioStream.src = STREAM_URL; // একদম রিয়েল-টাইম লাইভ অডিও লোড করা হচ্ছে
+                audioStream.load();
+                audioStream.play().catch(err => console.log("Playback error: ", err));
                 playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
             }
             isPlaying = !isPlaying;
         });
 
+        // ভলিউম ইনিশিয়াল সেটআপ
+        audioStream.volume = volumeSlider.value;
         volumeSlider.addEventListener('input', e => { audioStream.volume = e.target.value; });
 
 
