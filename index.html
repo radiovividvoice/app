@@ -618,221 +618,228 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        // ══════════════════════════════════════════════
-        //  ১. অডিও প্লেয়ার ও ভিজুয়ালাইজার
-        // ══════════════════════════════════════════════
-        const audioStream  = document.getElementById('audio-stream');
-        const playPauseBtn = document.getElementById('play-pause-btn');
-        const volumeSlider = document.getElementById('volume-slider');
-        const canvas       = document.getElementById('visualizer');
-        const canvasCtx    = canvas.getContext('2d');
+    // ══════════════════════════════════════════════
+    //  ১. অডিও প্লেয়ার ও অপটিমাইজড ভিজুয়ালাইজার
+    // ══════════════════════════════════════════════
+    const audioStream  = document.getElementById('audio-stream');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const canvas       = document.getElementById('visualizer');
+    const canvasCtx    = canvas.getContext('2d');
 
-        let audioContext, analyser, source, isPlaying = false;
+    const STREAM_URL = "https://stream.zeno.fm/xuin6ocdc2juv";
 
-        function setupVisualizer() {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            analyser     = audioContext.createAnalyser();
-            source       = audioContext.createMediaElementSource(audioStream);
-            source.connect(analyser);
-            analyser.connect(audioContext.destination);
-            analyser.fftSize = 256;
+    let audioContext, analyser, source, isPlaying = false;
+    let visualizerGradient; // গ্রাডিয়েন্ট লুপের বাইরে রাখার জন্য
 
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray    = new Uint8Array(bufferLength);
+    function resizeCanvasAndGradient() {
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        
+        // ফিক্স ১: গ্রাডিয়েন্ট লুপের বাইরে একবারই তৈরি হবে
+        visualizerGradient = canvasCtx.createLinearGradient(0, canvas.height, 0, 0);
+        visualizerGradient.addColorStop(0, 'rgba(106, 13, 173, 0.6)');
+        visualizerGradient.addColorStop(1, 'rgba(0, 242, 255, 0.6)');
+    }
 
-            canvas.width  = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+    window.addEventListener('resize', resizeCanvasAndGradient);
 
-            function draw() {
-                requestAnimationFrame(draw);
-                analyser.getByteFrequencyData(dataArray);
-                canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+    function setupVisualizer() {
+        // ফিক্স ২: latencyHint 'playback' দেওয়া হয়েছে বড় অডিও বাফারের জন্য
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContextClass({ latencyHint: 'playback' });
 
-                const barWidth = (canvas.width / bufferLength) * 2.5;
-                let x = 0;
-                for (let i = 0; i < bufferLength; i++) {
-                    const barHeight = dataArray[i] * 1.5;
-                    const gradient  = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
-                    gradient.addColorStop(0, 'rgba(106, 13, 173, 0.5)');
-                    gradient.addColorStop(1, 'rgba(0, 242, 255, 0.5)');
-                    canvasCtx.fillStyle = gradient;
-                    canvasCtx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight);
-                    x += barWidth + 1;
-                }
-            }
-            draw();
-        }
+        analyser = audioContext.createAnalyser();
+        source   = audioContext.createMediaElementSource(audioStream);
+        
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+        analyser.fftSize = 256;
 
-        playPauseBtn.addEventListener('click', () => {
-            if (!audioContext) setupVisualizer();
-            if (isPlaying) {
-                audioStream.pause();
-                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-                audioStream.play();
-                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            }
-            isPlaying = !isPlaying;
-        });
+        resizeCanvasAndGradient();
 
-        volumeSlider.addEventListener('input', e => { audioStream.volume = e.target.value; });
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray    = new Uint8Array(bufferLength);
 
+        function draw() {
+            requestAnimationFrame(draw);
+            analyser.getByteFrequencyData(dataArray);
+            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // ══════════════════════════════════════════════
-        //  ২. Now Playing — Zeno.fm SSE Metadata
-        // ══════════════════════════════════════════════
-        const npTitleEl  = document.getElementById('np-title');
-        const npArtistEl = document.getElementById('np-artist');
+            const barWidth = (canvas.width / bufferLength) * 2.5;
+            let x = 0;
 
-        /**
-         * টেক্সট wrapper-এর চেয়ে বড় হলে marquee চালু করা।
-         * CSS variable --scroll-dist দিয়ে স্ক্রোলের দূরত্ব সেট হয়।
-         */
-        function applyMarqueeIfNeeded(el) {
-            el.classList.remove('scrolling');
-            // reflow trigger করে সঠিক scrollWidth পাওয়া
-            void el.offsetWidth;
-            const overflow = el.scrollWidth - el.parentElement.clientWidth;
-            if (overflow > 5) {
-                el.style.setProperty('--scroll-dist', `-${overflow + 10}px`);
-                el.classList.add('scrolling');
+            canvasCtx.fillStyle = visualizerGradient; // প্রি-বিল্ড গ্রাডিয়েন্ট ব্যবহার
+
+            for (let i = 0; i < bufferLength; i++) {
+                const barHeight = dataArray[i] * 1.5;
+                canvasCtx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight);
+                x += barWidth + 1;
             }
         }
+        draw();
+    }
 
-        /**
-         * Now Playing কার্ড আপডেট — fade-in অ্যানিমেশন সহ।
-         * streamTitle ফরম্যাট: "Artist - Song Title"
-         */
-        function updateNowPlaying(streamTitle) {
-            let artist = '';
-            let title  = streamTitle || '';
+    playPauseBtn.addEventListener('click', async () => {
+        if (!audioContext) setupVisualizer();
 
-            if (title.includes(' - ')) {
-                const idx = title.indexOf(' - ');
-                artist = title.substring(0, idx).trim();
-                title  = title.substring(idx + 3).trim();
-            }
-
-            // Fade out
-            const card = document.getElementById('now-playing-card');
-            card.style.opacity = '0';
-
-            setTimeout(() => {
-                // টেক্সট সেট করা
-                npTitleEl.textContent  = title  || 'Radio Vivid Voice';
-                npArtistEl.textContent = artist || '';
-
-                // অ্যানিমেশন রিসেট করে আবার চালু
-                npTitleEl.classList.remove('np-animate', 'scrolling');
-                npArtistEl.classList.remove('np-animate', 'scrolling');
-                void npTitleEl.offsetWidth; // reflow
-
-                npTitleEl.classList.add('np-animate');
-                npArtistEl.classList.add('np-animate');
-
-                card.style.opacity = '1';
-
-                // marquee দরকার কিনা চেক — DOM paint শেষ হওয়ার পর
-                requestAnimationFrame(() => {
-                    applyMarqueeIfNeeded(npTitleEl);
-                    applyMarqueeIfNeeded(npArtistEl);
-                });
-
-            }, 350);
+        if (audioContext.state === 'suspended') {
+            await audioContext.resume();
         }
 
-        /**
-         * Zeno.fm-এর Server-Sent Events (SSE) endpoint থেকে
-         * real-time metadata নেওয়া। Connection ড্রপ হলে
-         * ১০ সেকেন্ড পর আবার try করে।
-         */
-        function connectMetadataSSE() {
-            const sseUrl = 'https://api.zeno.fm/mounts/metadata/subscribe/xuin6ocdc2juv';
-            let sse;
-
+        if (isPlaying) {
+            audioStream.pause();
+            // ফিক্স ৩: পজ করলে সকেট ডিসকানেক্ট করা (স্টেল বাফার গ্লিচ রোধে)
+            audioStream.src = ""; 
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            isPlaying = false;
+        } else {
+            audioStream.src = STREAM_URL;
+            audioStream.load();
             try {
-                sse = new EventSource(sseUrl);
-            } catch (e) {
-                setTimeout(connectMetadataSSE, 10000);
-                return;
+                await audioStream.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                isPlaying = true;
+            } catch (err) {
+                console.error("Playback failed:", err);
             }
-
-            sse.onmessage = function(event) {
-                try {
-                    const data = JSON.parse(event.data);
-                    // Zeno.fm SSE payload-এ streamTitle field থাকে
-                    if (data.streamTitle !== undefined) {
-                        updateNowPlaying(data.streamTitle);
-                    }
-                } catch (err) {
-                    // JSON parse error — skip
-                }
-            };
-
-            sse.onerror = function() {
-                sse.close();
-                // ১০ সেকেন্ড পর reconnect
-                setTimeout(connectMetadataSSE, 10000);
-            };
         }
-
-        // SSE connection চালু
-        connectMetadataSSE();
-
-
-        // ══════════════════════════════════════════════
-        //  ৩. Modal System
-        // ══════════════════════════════════════════════
-        const modalTriggers = document.querySelectorAll('[data-modal]');
-        const closeBtns     = document.querySelectorAll('.close-modal-btn');
-        const overlay       = document.getElementById('modal-overlay');
-
-        modalTriggers.forEach(t => t.addEventListener('click', e => {
-            e.preventDefault();
-            const modal = document.getElementById(t.dataset.modal + '-modal');
-            if (modal) openModal(modal);
-        }));
-
-        closeBtns.forEach(b => b.addEventListener('click', () => closeModal(b.closest('.modal'))));
-
-        overlay.addEventListener('click', () => {
-            const open = document.querySelector('.modal[style*="block"]');
-            if (open) closeModal(open);
-        });
-
-        function openModal(m) {
-            overlay.style.display = 'block';
-            m.style.display       = 'block';
-            setTimeout(() => {
-                overlay.style.opacity  = '1';
-                m.style.opacity        = '1';
-                m.style.transform      = 'translate(-50%, -50%) scale(1)';
-            }, 10);
-        }
-
-        function closeModal(m) {
-            overlay.style.opacity = '0';
-            m.style.opacity       = '0';
-            m.style.transform     = 'translate(-50%, -50%) scale(0.95)';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                m.style.display       = 'none';
-            }, 300);
-        }
-
-        // ══════════════════════════════════════════════
-        //  ৪. Request Form
-        // ══════════════════════════════════════════════
-        document.getElementById('request-form').addEventListener('submit', e => {
-            e.preventDefault();
-            const f    = new FormData(e.target);
-            const body = `Name: ${f.get('name')}\nLocation: ${f.get('location')}\nSong: ${f.get('songName')}\nArtist: ${f.get('artistName')}\nMessage: ${f.get('message')}`;
-            window.location.href = `mailto:radiovividvoice@gmail.com?subject=Song Request&body=${encodeURIComponent(body)}`;
-            closeModal(document.getElementById('request-modal'));
-            e.target.reset();
-        });
-
     });
+
+    volumeSlider.addEventListener('input', e => { audioStream.volume = e.target.value; });
+
+
+    // ══════════════════════════════════════════════
+    //  ২. Now Playing — Zeno.fm SSE Metadata
+    // ══════════════════════════════════════════════
+    const npTitleEl  = document.getElementById('np-title');
+    const npArtistEl = document.getElementById('np-artist');
+
+    function applyMarqueeIfNeeded(el) {
+        el.classList.remove('scrolling');
+        void el.offsetWidth;
+        const overflow = el.scrollWidth - el.parentElement.clientWidth;
+        if (overflow > 5) {
+            el.style.setProperty('--scroll-dist', `-${overflow + 10}px`);
+            el.classList.add('scrolling');
+        }
+    }
+
+    function updateNowPlaying(streamTitle) {
+        let artist = '';
+        let title  = streamTitle || '';
+
+        if (title.includes(' - ')) {
+            const idx = title.indexOf(' - ');
+            artist = title.substring(0, idx).trim();
+            title  = title.substring(idx + 3).trim();
+        }
+
+        const card = document.getElementById('now-playing-card');
+        card.style.opacity = '0';
+
+        setTimeout(() => {
+            npTitleEl.textContent  = title  || 'Radio Vivid Voice';
+            npArtistEl.textContent = artist || '';
+
+            npTitleEl.classList.remove('np-animate', 'scrolling');
+            npArtistEl.classList.remove('np-animate', 'scrolling');
+            void npTitleEl.offsetWidth; 
+
+            npTitleEl.classList.add('np-animate');
+            npArtistEl.classList.add('np-animate');
+
+            card.style.opacity = '1';
+
+            requestAnimationFrame(() => {
+                applyMarqueeIfNeeded(npTitleEl);
+                applyMarqueeIfNeeded(npArtistEl);
+            });
+        }, 350);
+    }
+
+    function connectMetadataSSE() {
+        const sseUrl = 'https://api.zeno.fm/mounts/metadata/subscribe/xuin6ocdc2juv';
+        let sse;
+
+        try {
+            sse = new EventSource(sseUrl);
+        } catch (e) {
+            setTimeout(connectMetadataSSE, 10000);
+            return;
+        }
+
+        sse.onmessage = function(event) {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.streamTitle !== undefined) {
+                    updateNowPlaying(data.streamTitle);
+                }
+            } catch (err) {}
+        };
+
+        sse.onerror = function() {
+            sse.close();
+            setTimeout(connectMetadataSSE, 10000);
+        };
+    }
+
+    connectMetadataSSE();
+
+
+    // ══════════════════════════════════════════════
+    //  ৩. Modal System
+    // ══════════════════════════════════════════════
+    const modalTriggers = document.querySelectorAll('[data-modal]');
+    const closeBtns     = document.querySelectorAll('.close-modal-btn');
+    const overlay       = document.getElementById('modal-overlay');
+
+    modalTriggers.forEach(t => t.addEventListener('click', e => {
+        e.preventDefault();
+        const modal = document.getElementById(t.dataset.modal + '-modal');
+        if (modal) openModal(modal);
+    }));
+
+    closeBtns.forEach(b => b.addEventListener('click', () => closeModal(b.closest('.modal'))));
+
+    overlay.addEventListener('click', () => {
+        const open = document.querySelector('.modal[style*="block"]');
+        if (open) closeModal(open);
+    });
+
+    function openModal(m) {
+        overlay.style.display = 'block';
+        m.style.display       = 'block';
+        setTimeout(() => {
+            overlay.style.opacity  = '1';
+            m.style.opacity        = '1';
+            m.style.transform      = 'translate(-50%, -50%) scale(1)';
+        }, 10);
+    }
+
+    function closeModal(m) {
+        overlay.style.opacity = '0';
+        m.style.opacity       = '0';
+        m.style.transform     = 'translate(-50%, -50%) scale(0.95)';
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            m.style.display       = 'none';
+        }, 300);
+    }
+
+    // ══════════════════════════════════════════════
+    //  ৪. Request Form
+    // ══════════════════════════════════════════════
+    document.getElementById('request-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const f    = new FormData(e.target);
+        const body = `Name: ${f.get('name')}\nLocation: ${f.get('location')}\nSong: ${f.get('songName')}\nArtist: ${f.get('artistName')}\nMessage: ${f.get('message')}`;
+        window.location.href = `mailto:radiovividvoice@gmail.com?subject=Song Request&body=${encodeURIComponent(body)}`;
+        closeModal(document.getElementById('request-modal'));
+        e.target.reset();
+    });
+
+});
     </script>
 </body>
 </html>
