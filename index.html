@@ -652,24 +652,28 @@
         }
 
         playPauseBtn.addEventListener('click', () => {
-            if (!audioContext) setupVisualizer();
             
-            // ব্রাউজার সিকিউরিটি পলিসির জন্য AudioContext রিজিউম করা
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-
             if (isPlaying) {
                 audioStream.pause();
-                audioStream.src = ''; // বাফার ক্লিয়ার করে গ্লিচ বন্ধ করা হলো
+                audioStream.src = ''; 
                 playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                isPlaying = false;
             } else {
-                audioStream.src = STREAM_URL; // একদম রিয়েল-টাইম লাইভ অডিও লোড করা হচ্ছে
+                // ১. আগে অডিও সোর্স লোড করা হলো
+                audioStream.src = STREAM_URL; 
                 audioStream.load();
+
+                // ২. সোর্স পাওয়ার পর ভিজুয়ালাইজার কানেক্ট করা হলো (ফাঁদ বাইপাস)
+                if (!audioContext) setupVisualizer(); 
+
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+
                 audioStream.play().catch(err => console.log("Playback error: ", err));
                 playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                isPlaying = true;
             }
-            isPlaying = !isPlaying;
         });
 
         // ভলিউম ইনিশিয়াল সেটআপ
